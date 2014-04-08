@@ -28,7 +28,9 @@ function [ WP, WB, WC ] = mini_batch( data, T, B, C, K, alpha, lambda )
                 pk1 = 1 -  pk0;
                 
                 gWB = gWB + pk1;                
-                gWP = gWP + repmat(xd_tmp', 1, K) .* repmat(pk1, D, 1);
+%                gWP = gWP + repmat(xd_tmp', 1, K) .* repmat(pk1, D, 1);
+                tmp = xd_tmp'*pk1;
+                gWP = gWP + tmp;
             end
             
             gWC2 = zeros(1, D);
@@ -46,8 +48,10 @@ function [ WP, WB, WC ] = mini_batch( data, T, B, C, K, alpha, lambda )
                 gWC2 = gWC2 + xc_bar;
                 pk1_h = 1 -  pk0_h;
                 
-                gWB2 = gWB2 + pk1_h;                
-                gWP2 = gWP2 + repmat(xc_bar', 1, K) .* repmat(pk1_h, D, 1);
+                gWB2 = gWB2 + pk1_h;
+                
+                gWP2 = gWP2 + xc_bar'*pk1_h;
+ %               gWP2 = gWP2 + repmat(xc_bar', 1, K) .* repmat(pk1_h, D, 1);
             end
             
             WC = WC + alpha * (gWC/NB - gWC2/C - lambda * WC);
