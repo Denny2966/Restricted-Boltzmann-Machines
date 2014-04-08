@@ -1,4 +1,4 @@
-function [ WP, WB, WC ] = mini_batch( data, T, B, C, K, alpha, lambda )
+function [ WP, WB, WC, xcd, hck ] = mini_batch( data, T, B, C, K, alpha, lambda )
 %MINI_BATCH Summary of this function goes here
 %   Detailed explanation goes here
     D = size(data, 2);
@@ -13,8 +13,8 @@ function [ WP, WB, WC ] = mini_batch( data, T, B, C, K, alpha, lambda )
     for i = 1:T
         t0 = clock;
         for b = 1:B
-            disp(b)
-            t1 = clock;
+%            disp(b)
+%            t1 = clock;
             gWC = zeros(1, D);
             gWB = zeros(1, K);
             gWP = zeros(D, K); 
@@ -50,7 +50,7 @@ function [ WP, WB, WC ] = mini_batch( data, T, B, C, K, alpha, lambda )
             WC = WC + alpha * (gWC/NB - gWC2/C - lambda * WC);
             WB = WB + alpha * (gWB/NB - gWB2/C - lambda * WB);
             WP = WP + alpha * (gWP/NB - gWP2/C - lambda * WP);
-            disp(etime(clock, t1))
+ %           disp(etime(clock, t1))
         end
         disp('New iteration:')
         disp(i)
