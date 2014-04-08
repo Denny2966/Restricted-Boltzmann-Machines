@@ -41,11 +41,14 @@ function [ WP, WB, WC ] = mini_batch( data, T, B, C, K, alpha, lambda )
                 hck(c, :) = ones(1, K);
                 hck(c, rand(1, K) < pk0_h) = 0;
                 
+                gWC2 = gWC2 + xcd(c, :);
                 pk1_h_array(c, :) = 1 -  pk0_h;                              
+                
+                gWP2 = gWP2 + xcd(c, :)'*pk1_h;
+ %               gWP2 = gWP2 + repmat(xc_bar', 1, K) .* repmat(pk1_h, D, 1);
             end
-            gWC2 = gWC2 + sum(xcd, 1);
+            gWC2 = gWC2 + sum(xcd, 1)
             gWB2 = gWB2 + sum(pk1_h_array, 1);
-            gWP2 = gWP2 + xcd' * pk1_h_array;
             
             WC = WC + alpha * (gWC/NB - gWC2/C - lambda * WC);
             WB = WB + alpha * (gWB/NB - gWB2/C - lambda * WB);
